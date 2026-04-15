@@ -313,16 +313,18 @@ bool fillArchiveNameVector(std::vector<std::string>& pArchiveNames)
     printf("Adding data files from locale directories.\n");
     for (auto & locale : locales)
     {
-        pArchiveNames.push_back(in_path + locale + "/locale-" + locale + ".MPQ");
-        pArchiveNames.push_back(in_path + locale + "/expansion-locale-" + locale + ".MPQ");
-        pArchiveNames.push_back(in_path + locale + "/lichking-locale-" + locale + ".MPQ");
+        pArchiveNames.push_back(in_path + locale + "/vanilla-" + locale + ".MPQ");
+        pArchiveNames.push_back(in_path + locale + "/expansion01-" + locale + ".MPQ");
+        pArchiveNames.push_back(in_path + locale + "/expansion02-" + locale + ".MPQ");
+        pArchiveNames.push_back(in_path + locale + "/expansion03-" + locale + ".MPQ");
     }
 
     // open expansion and common files
-    pArchiveNames.push_back(input_path + string("common.MPQ"));
-    pArchiveNames.push_back(input_path + string("common-2.MPQ"));
-    pArchiveNames.push_back(input_path + string("expansion.MPQ"));
-    pArchiveNames.push_back(input_path + string("lichking.MPQ"));
+    pArchiveNames.push_back(input_path + string("vanilla.MPQ"));
+    pArchiveNames.push_back(input_path + string("turtlew.MPQ"));
+    pArchiveNames.push_back(input_path + string("expansion01.MPQ"));
+    pArchiveNames.push_back(input_path + string("expansion02.MPQ"));
+    pArchiveNames.push_back(input_path + string("expansion03.MPQ"));
 
     // now, scan for the patch levels in the core dir
     printf("Scanning patch levels from data directory.\n");

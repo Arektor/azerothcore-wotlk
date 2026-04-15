@@ -102,15 +102,21 @@ float CONF_flat_liquid_delta_limit = 0.001f; // If max - min less this value - l
 // List MPQ for extract from
 const char* CONF_mpq_list[] =
 {
-    "common.MPQ",
-    "common-2.MPQ",
-    "lichking.MPQ",
-    "expansion.MPQ",
-    "patch.MPQ",
-    "patch-2.MPQ",
-    "patch-3.MPQ",
-    "patch-4.MPQ",
-    "patch-5.MPQ",
+    "vanilla.MPQ",
+    "turtlew.MPQ",
+    "expansion01.MPQ",
+    "expansion02.MPQ",
+    "expansion03.MPQ",
+};
+
+// List locale MPQ for extract from
+const char* CONF_mpqlocale_list[] =
+{
+    "vanilla-%s.MPQ",
+    "turtlew-%s.MPQ",
+    "expansion01-%s.MPQ",
+    "expansion02-%s.MPQ",
+    "expansion03-%s.MPQ",
 };
 
 static const char* const langs[] = {"enGB", "enUS", "deDE", "esES", "frFR", "koKR", "zhCN", "zhTW", "enCN", "enTW", "esMX", "ruRU" };
@@ -1145,8 +1151,19 @@ void LoadLocaleMPQFiles(int const locale)
 {
     char filename[512];
 
-    sprintf(filename, "%s/Data/%s/locale-%s.MPQ", input_path, langs[locale], langs[locale]);
-    new MPQArchive(filename);
+    //sprintf(filename, "%s/Data/%s/locale-%s.MPQ", input_path, langs[locale], langs[locale]);
+    //new MPQArchive(filename);
+
+    // Load all locale-specific MPQ files from the list
+    int localeCount = sizeof(CONF_mpqlocale_list) / sizeof(char*);
+    for (int i = 0; i < localeCount; ++i)
+    {
+        char localename[64];
+        sprintf(localename, CONF_mpqlocale_list[i], langs[locale]);
+        sprintf(filename, "%s/Data/%s/%s", input_path, langs[locale], localename);
+        if (FileExists(filename))
+            new MPQArchive(filename);
+    }
 
     for (int i = 1; i <= 9; ++i)
     {
@@ -1167,6 +1184,18 @@ void LoadCommonMPQFiles()
     for (int i = 0; i < count; ++i)
     {
         sprintf(filename, "%s/Data/%s", input_path, CONF_mpq_list[i]);
+        if (FileExists(filename))
+            new MPQArchive(filename);
+    }
+
+    // Load patch MPQ files following the "patch[-N].MPQ" naming convention
+    for (int i = 1; i <= 9; ++i)
+    {
+        char ext[3] = "";
+        if (i > 1)
+            sprintf(ext, "-%i", i);
+
+        sprintf(filename, "%s/Data/patch%s.MPQ", input_path, ext);
         if (FileExists(filename))
             new MPQArchive(filename);
     }
