@@ -1220,13 +1220,14 @@ int main(int argc, char* arg[])
     for (int i = 0; i < LANG_COUNT; i++)
     {
         char tmp1[512];
-        sprintf(tmp1, "%s/Data/%s/locale-%s.MPQ", input_path, langs[i], langs[i]);
+        sprintf(tmp1, "%s/Data/%s/vanilla-%s.MPQ", input_path, langs[i], langs[i]);
         if (FileExists(tmp1))
         {
             printf("Detected locale: %s\n", langs[i]);
 
             //Open MPQs
             LoadLocaleMPQFiles(i);
+            LoadCommonMPQFiles();
 
             if ((CONF_extract & EXTRACT_DBC) == 0)
             {
