@@ -157,7 +157,7 @@ bool Player::UpdateStats(Stats stat)
             mask |= (*i)->GetMiscValue();
     if (mask)
     {
-        for (uint8 rating = 0; rating < MAX_COMBAT_RATING; ++rating)
+        for (uint8 rating = 0; rating < MAX_CUSTOM_RATING; ++rating)
             if (mask & (1 << rating))
                 ApplyRatingMod(CombatRating(rating), 0, true);
     }

@@ -4682,6 +4682,15 @@ void Player::ApplyEnchantment(Item* item, EnchantmentSlot slot, bool apply, bool
                             HandleBaseModFlatValue(SHIELD_BLOCK_VALUE, float(enchant_amount), apply);
                             LOG_DEBUG("entities.player.items", "+ {} BLOCK_VALUE", enchant_amount);
                             break;
+                        case ITEM_MOD_MASTERY_RATING:
+                            ApplyRatingMod(CR_MASTERY, enchant_amount, apply);
+                            break;
+                        case ITEM_MOD_FORTUNE_RATING:
+                            ApplyRatingMod(CR_FORTUNE, enchant_amount, apply);
+                            break;
+                        case ITEM_MOD_VAMPIRISM_RATING:
+                            ApplyRatingMod(CR_VAMPIRISM, enchant_amount, apply);
+                            break;
                         /// @deprecated item mods
                         case ITEM_MOD_SPELL_HEALING_DONE:
                             ApplySpellHealingBonus(enchant_amount, apply);

@@ -319,8 +319,11 @@ Player::Player(WorldSession* session): Unit(), m_mover(this), _cinematicMgr(*thi
         m_auraBasePctMod[i] = 1.0f;
     }
 
-    for (uint8 i = 0; i < MAX_COMBAT_RATING; i++)
+    for (uint8 i = 0; i < MAX_CUSTOM_RATING; i++)
         m_baseRatingValue[i] = 0;
+
+    for (uint8 i = 0; i < MAX_CUSTOM_RATING - MAX_COMBAT_RATING; i++)
+        m_customRatingValue[i] = 0;
 
     m_baseSpellPower = 0;
     m_baseSpellDamage = 0;
@@ -5182,7 +5185,10 @@ float Player::GetRatingMultiplier(CombatRating cr) const
 
 float Player::GetRatingBonusValue(CombatRating cr) const
 {
-    return float(GetUInt32Value(static_cast<uint16>(PLAYER_FIELD_COMBAT_RATING_1) + cr)) * GetRatingMultiplier(cr);
+    if (cr < MAX_COMBAT_RATING)
+        return float(GetUInt32Value(static_cast<uint16>(PLAYER_FIELD_COMBAT_RATING_1) + cr)) * GetRatingMultiplier(cr);
+    else
+        return float(m_customRatingValue[cr - MAX_COMBAT_RATING]) * GetRatingMultiplier(cr);
 }
 
 float Player::GetExpertiseDodgeOrParryReduction(WeaponAttackType attType) const
@@ -6795,6 +6801,15 @@ void Player::_ApplyItemBonuses(ItemTemplate const* proto, uint8 slot, bool apply
                 break;
             case ITEM_MOD_BLOCK_VALUE:
                 HandleBaseModFlatValue(SHIELD_BLOCK_VALUE, float(val), apply);
+                break;
+            case ITEM_MOD_MASTERY_RATING:
+                ApplyRatingMod(CR_MASTERY, int32(val), apply);
+                break;
+            case ITEM_MOD_FORTUNE_RATING:
+                ApplyRatingMod(CR_FORTUNE, int32(val), apply);
+                break;
+            case ITEM_MOD_VAMPIRISM_RATING:
+                ApplyRatingMod(CR_VAMPIRISM, int32(val), apply);
                 break;
             /// @deprecated item mods
             case ITEM_MOD_SPELL_HEALING_DONE:

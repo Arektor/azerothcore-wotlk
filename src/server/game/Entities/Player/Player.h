@@ -2868,7 +2868,7 @@ protected:
 
     float m_auraBaseFlatMod[BASEMOD_END];
     float m_auraBasePctMod[BASEMOD_END];
-    int32 m_baseRatingValue[MAX_COMBAT_RATING];
+    int32 m_baseRatingValue[MAX_CUSTOM_RATING];
     uint32 m_baseSpellPower;
     uint32 m_baseSpellDamage;
     uint32 m_baseSpellHealing;
@@ -3062,6 +3062,10 @@ private:
     bool _expectingChangeTransport;
     uint32 _pendingFlightChangeCounter;
     uint32 _mapChangeOrderCounter;
+
+    // Worldserver doesn't seem to like adding new fields in the middle of others, so we just append at the end all custom ones
+protected:
+    int32 m_customRatingValue[MAX_CUSTOM_RATING - MAX_COMBAT_RATING];
 };
 
 void AddItemsSetItem(Player* player, Item* item);

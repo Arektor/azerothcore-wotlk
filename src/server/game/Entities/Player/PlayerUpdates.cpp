@@ -619,7 +619,18 @@ void Player::UpdateRating(CombatRating cr)
                                          (*i)->GetAmount()));
     if (amount < 0)
         amount = 0;
-    SetUInt32Value(static_cast<uint16>(PLAYER_FIELD_COMBAT_RATING_1) + static_cast<uint16>(cr), uint32(amount));
+    //SetUInt32Value(static_cast<uint16>(PLAYER_FIELD_COMBAT_RATING_1) + static_cast<uint16>(cr), uint32(amount));
+    if (cr < MAX_COMBAT_RATING)
+        SetUInt32Value(PLAYER_FIELD_COMBAT_RATING_1 + AsUnderlyingType(cr), uint32(amount));
+    else
+    {
+        int8 rating = cr - MAX_COMBAT_RATING;
+        m_customRatingValue[rating] = amount;
+        WorldPacket data(SMSG_UPDATE_CUSTOM_COMBAT_RATING, 1 + 4);
+        data << rating;
+        data << amount;
+        SendDirectMessage(&data);
+    }
 
     bool affectStats = CanModifyStats();
 
@@ -699,7 +710,7 @@ void Player::UpdateRating(CombatRating cr)
 
 void Player::UpdateAllRatings()
 {
-    for (uint8 cr = 0; cr < MAX_COMBAT_RATING; ++cr)
+    for (uint8 cr = 0; cr < MAX_CUSTOM_RATING; ++cr)
         UpdateRating(CombatRating(cr));
 }
 
