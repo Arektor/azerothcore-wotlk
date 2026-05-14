@@ -1041,6 +1041,18 @@ uint32 Unit::DealDamage(Unit* attacker, Unit* victim, uint32 damage, CleanDamage
         }
     }
 
+    // Vampirism
+    if (attacker && attacker->IsPlayer())
+    {
+        float fVampirism = attacker->ToPlayer()->GetRatingBonusValue(CR_VAMPIRISM) / 100.0f;
+        if (fVampirism > 0)
+        {
+            //attacker->ModifyHealth(damage * fVampirism);
+            int32 bp1 = damage * fVampirism;
+            attacker->CastCustomSpell(attacker, 17000, &bp1, nullptr, nullptr, true);
+        }
+    }
+
     // Signal the pet it was attacked so the AI can respond if needed
     if (victim->IsCreature() && attacker != victim && victim->IsPet() && victim->IsAlive())
         victim->ToPet()->AI()->AttackedBy(attacker);
