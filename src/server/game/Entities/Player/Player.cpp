@@ -7284,6 +7284,8 @@ void Player::CastItemCombatSpell(Unit* target, WeaponAttackType attType, uint32 
     if (!sScriptMgr->OnPlayerCanCastItemCombatSpell(this, target, attType, procVictim, procEx, item, proto))
         return;
 
+    float fFortune = (GetRatingBonusValue(CR_FORTUNE) / 100.0f) + 1.0f;
+
     // Can do effect if any damage done to target
     if (procVictim & PROC_FLAG_TAKEN_DAMAGE)
         //if (damageInfo->procVictim & PROC_FLAG_TAKEN_ANY_DAMAGE)
@@ -7318,6 +7320,8 @@ void Player::CastItemCombatSpell(Unit* target, WeaponAttackType attType, uint32 
             {
                 chance = GetWeaponProcChance();
             }
+
+            chance *= fFortune;
 
             if (roll_chance_f(chance) && sScriptMgr->OnCastItemCombatSpell(this, target, spellInfo, item))
                 CastSpell(target, spellInfo->Id, TriggerCastFlags(TRIGGERED_FULL_MASK & ~TRIGGERED_IGNORE_SPELL_AND_CATEGORY_CD), item);
@@ -7389,6 +7393,8 @@ void Player::CastItemCombatSpell(Unit* target, WeaponAttackType attType, uint32 
             // Shiv has 100% chance to apply the poison
             if (FindCurrentSpellBySpellId(5938) && e_slot == TEMP_ENCHANTMENT_SLOT)
                 chance = 100.0f;
+
+            chance *= fFortune;
 
             if (roll_chance_f(chance))
             {

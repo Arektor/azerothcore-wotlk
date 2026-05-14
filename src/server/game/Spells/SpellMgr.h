@@ -310,8 +310,13 @@ enum EnchantProcAttributes
 struct SpellEnchantProcEntry
 {
     uint32      customChance;
+
     float       PPMChance;
+
+    // enum ProcFlagsHit
     uint32      procEx;
+
+    // enum EnchantProcAttributes
     uint32      attributeMask;
 };
 
