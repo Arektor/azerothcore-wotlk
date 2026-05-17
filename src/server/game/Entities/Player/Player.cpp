@@ -13679,6 +13679,7 @@ uint32 Player::CalculateTalentsPoints() const
     if (!IsClass(CLASS_DEATH_KNIGHT, CLASS_CONTEXT_TALENT_POINT_CALC) || GetMapId() != MAP_EBON_HOLD)
     {
         talentPointsForLevel = base_talent;
+        talentPointsForLevel += m_questRewardTalentCount;
     }
     else
     {
